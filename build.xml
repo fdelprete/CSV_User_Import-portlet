@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="CSV_User_Import-portlet" basedir="." default="deploy">
+	<import file="C:\testing62\liferay-plugins-sdk-6.2.0\portlets/build-common-portlet.xml" />
+</project>
