@@ -1,5 +1,3 @@
-CSV_User_Import-portlet
-
 <h2>Introduction</h2>
 This is a control panel Liferay portlet you can use to import and create portal users from a CSV file.
 
@@ -21,3 +19,10 @@ The column <strong>birthday</strong> will be the Lifeary users's Birthday. In th
 <br/>
 In the configuration page you can "Ignore" some columns: the column have to be present in the CSV file, but the corresponding values will be ignored during the import.
 If the column is marked as "Optional" the corresponding values, if presents, will be registered for the user.
+<h3>Requirements and info</h3>
+This portlet is based on the original work of Paul Butenko (tks Paul).<br>
+http://java-liferay.blogspot.it/2012/09/how-to-make-users-import-into-liferay.html
+<br/>
+It uses SuperCSV java package.<br/>
+This portlet is for the 6.2.0-GA1 CE version of Liferay.
+
