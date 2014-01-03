@@ -9,7 +9,9 @@ package com.fmdp.csvuserimport.portlet;
  */
 import java.util.Calendar;
 import java.util.Locale;
+
 import javax.portlet.ActionRequest;
+
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -17,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
@@ -42,9 +43,9 @@ public class UserServiceImpl {
     return INSTANCE;
   }
 
-  public User addUser(final ActionRequest request,
-                      final CsvUserBean userBean) {
-    User user = addLiferayUser(request, userBean);
+  public User addUser(ActionRequest request,
+                      CsvUserBean userBean, Long roleId) {
+    User user = addLiferayUser(request, userBean, roleId);
     if (user != null) {
 	    userBean.setLiferayUserId(user.getUserId());
 	    if (_log.isInfoEnabled()){
@@ -58,10 +59,11 @@ public class UserServiceImpl {
     return user;
   }
 
-  private User addLiferayUser(final ActionRequest request,
-                             final CsvUserBean userBean) {
+  private User addLiferayUser(ActionRequest request,
+                              CsvUserBean userBean, Long roleId) {
     User user = null;
     try {
+//      PortletSession portletSession = request.getPortletSession();
       ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
       long creatorUserId = themeDisplay.getUserId(); // default liferay user
@@ -104,10 +106,10 @@ public class UserServiceImpl {
       long[] groupIds = null;
       long[] organizationIds = null;
       long[] roleIds = null;
-      String role = ParamUtil.getString(request, "roleId");
-      if (role != "") {
+      //String role = (String)request.getParameter("roleId");
+      if (roleId != 0 ) {
     	  roleIds = new long[1];
-    	  roleIds[0] = Long.valueOf(role).longValue();
+    	  roleIds[0] = roleId;
       }
 
       long[] userGroupIds = null;

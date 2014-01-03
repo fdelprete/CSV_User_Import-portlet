@@ -22,6 +22,7 @@
 		</supports>
         <supported-locale>en</supported-locale>
         <supported-locale>it_IT</supported-locale>
+        <supported-locale>it</supported-locale>
         <resource-bundle>content.Language</resource-bundle>
 		<portlet-info>
 			<title>CSV User Import</title>

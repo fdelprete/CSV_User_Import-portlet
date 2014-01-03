@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.fmdp.csvuserimport.portlet.model.CsvUserBean;
@@ -39,6 +40,7 @@ public class ImportPortlet extends MVCPortlet {
 			if (_log.isDebugEnabled()) {
 				_log.debug("We are in try");
 			}
+			
 			UploadPortletRequest uploadRequest = PortalUtil
 					.getUploadPortletRequest(actionRequest);
 			if (_log.isDebugEnabled()) {
@@ -47,12 +49,13 @@ public class ImportPortlet extends MVCPortlet {
 			if (uploadRequest.getSize("fileName") == 0) {
 				throw new IOException("File size is 0");
 			}
-
+			Long roleId = ParamUtil.getLong(uploadRequest, "roleId");
+			
 			String sourceFileName = uploadRequest.getFileName("fileName");
 			File file = uploadRequest.getFile("fileName");
 
 			if (_log.isDebugEnabled()) {
-				_log.info("File name:" + sourceFileName);
+				_log.debug("File name:" + sourceFileName);
 			}
 			UserServiceImpl usi = UserServiceImpl.getInstance();
 			int count = 1;
@@ -60,6 +63,7 @@ public class ImportPortlet extends MVCPortlet {
 
 			if (_log.isInfoEnabled()) {
 				_log.info("##### Started importing #####");
+				_log.info("roleId " + ParamUtil.getLong(uploadRequest, "roleId"));
 			}
 			UserCacheEngine userCacheEngine = UserCacheEngine.getInstance();
 			if (_log.isInfoEnabled()) {
@@ -74,7 +78,7 @@ public class ImportPortlet extends MVCPortlet {
 							+ user.getFirstName() + " " + user.getLastName());
 				}
 				count = count + 1;
-				usi.addUser(actionRequest, user);
+				usi.addUser(actionRequest, user, roleId);
 				if (!user.getImpStatus().equals("User imported.")) {
 					if (_log.isInfoEnabled()) {
 						_log.info(" User not added to portal");

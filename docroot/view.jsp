@@ -8,10 +8,14 @@
 <%@ page import="javax.portlet.PortletPreferences"%>
 <%@ page import="com.liferay.util.PwdGenerator"%>
 <%@ page import="com.liferay.portal.service.RoleLocalServiceUtil"%>
+<%@ page import="com.liferay.portal.service.OrganizationLocalServiceUtil"%>
 <%@ page import="com.liferay.portal.model.RoleConstants"%>
+<%@ page import="com.liferay.portal.model.OrganizationConstants"%>
 <%@ page import="com.fmdp.csvuserimport.portlet.model.CsvUserBean"%>
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 <%@ page import="com.liferay.portal.model.Role"%>
+<%@ page import="com.liferay.portal.model.Organization"%>
+<%@ page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %>
 <%@ page import="java.util.List" %>
 
 <jsp:useBean id="utenti" class="java.util.ArrayList" 
@@ -30,6 +34,8 @@ if (Validator.isNotNull(portletResource)) {
 String csvSeparator = preferences.getValue("csvSeparator",";");
 //long companyId = themeDisplay.getCompanyId();
 List<Role> roles = RoleLocalServiceUtil.getRoles(company.getCompanyId());
+long parentOrganizationId = OrganizationConstants.ANY_PARENT_ORGANIZATION_ID;
+List<Organization> organizations = OrganizationLocalServiceUtil.getOrganizations(company.getCompanyId(),parentOrganizationId);
 String count_good = "";
 Integer total_users = 0;
 if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
@@ -51,20 +57,25 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 <liferay-ui:error key="expected-header-not-found-in-the-csv-file" message="Expected header not found in the CSV file." />
 <liferay-ui:error key="error" message="Sorry, an error prevented the upload. Please try again." />
  
-<aui:form action="<%= uploadCsvURL %>" enctype="multipart/form-data" method="post" >
+<aui:form action="<%= uploadCsvURL %>" enctype="multipart/form-data" 
+ method="post">
 	<div class="alert alert-info">
 		<liferay-ui:message key="file-must-be-csv" />
 		<liferay-ui:message key='<%= LanguageUtil.format(pageContext, "first-row-format", csvSeparator) %>'/>
 	</div>
 	<aui:fieldset cssClass='fieldset'>
 		<aui:input type="file" name="fileName" size="75" helpMessage="load-csv-file"/>
-		<br/>
-		<br/>
-		<aui:select label="role"  name="roleId" helpMessage="select-role" showEmptyOption="true" >
+		<aui:select label="role" name="roleId" helpMessage="select-role" showEmptyOption="true" >
 	             <%
 	                    for (int i = 0; i < roles.size(); i++) {
+	                    	
 	                    	Role role=(Role)roles.get(i);
-	                    	if((role.getType()==RoleConstants.TYPE_REGULAR) && (!role.getTitle(themeDisplay.getLanguageId()).equals("Guest")) && (!role.getTitle(themeDisplay.getLanguageId()).equals("Owner"))) {
+	                    	String name = role.getName();
+	                    	boolean unassignableRole = false;
+	                    	if (name.equals(RoleConstants.GUEST) || name.equals(RoleConstants.OWNER) || name.equals(RoleConstants.USER)) {
+	                    		unassignableRole = true;
+	                    	}
+	                    	if((role.getType()==RoleConstants.TYPE_REGULAR) && (!unassignableRole)) {
 	             %>
 	                    		<aui:option label='<%= role.getTitle(themeDisplay.getLanguageId()) + " - " + role.getTypeLabel()%>'
 	                           		value="<%= role.getRoleId() %>" />
@@ -73,14 +84,47 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	                    }
 	             %>
 	     </aui:select>
+	     <%
+	     if (organizations.size() > 0) {
+	     %>
+		<aui:select label="organization" name="organizationId" helpMessage="select-organization" showEmptyOption="true" >
+	             <%
+	                    for (int i = 0; i < organizations.size(); i++) {
+	                    	
+	                    	Organization organization=(Organization)organizations.get(i);
+	                    	String name = organization.getName();
+	             %>
+	                    	<aui:option label='<%= organization.getName()%>'
+	                           	value="<%= organization.getName() %>" />
+	             <%
+	                    }
+	             %>
+	     </aui:select>
+		<%
+	     }
+		%>
      </aui:fieldset>
      <aui:button-row>
-     	<input type="submit" value="<liferay-ui:message key="upload" />" onClick="<%= uploadProgressId %>.startProgress(); return true;" />
+     <%
+	 String taglibOnClick = uploadProgressId + ".startProgress(); return true;";
+	 %>
+         <aui:button type="submit" value="upload" 
+         onClick="<%= taglibOnClick %>"/> 	
 	</aui:button-row>
-	<br/>
+</aui:form>
+<br/>
 	<%
 	if (utenti.size()>0){ 
 	%>
+<liferay-ui:toggle id="table-toggle_id"
+		hideMessage='<%= "&laquo; " + LanguageUtil.get(pageContext, "hide-table") %>' 
+		showMessage='<%= LanguageUtil.get(pageContext, "show-table") + "&raquo; " %>'
+		showImage='<%= themeDisplay.getPathThemeImages() + "/arrows/01_down.png"%>'
+		hideImage='<%= themeDisplay.getPathThemeImages() + "/arrows/01_right.png"%>'
+		defaultShowContent="<%=true %>" />
+<div id="table-toggle_id" 
+style="display:<liferay-ui:toggle-value id="table-toggle_id"/>; padding-top:10px;">
+
 	<table class="table table-bordered table-hover table-striped"> 
 	<thead class="table-columns">
 		<tr> 
@@ -104,9 +148,10 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	%>
      </tbody>
      </table>
+</div>	
 	<%
 	} //if (utenti.size()>0)
 	%>
      
-</aui:form>
+
  
