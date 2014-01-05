@@ -1,8 +1,6 @@
 package com.fmdp.csvuserimport.portlet;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
+
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -10,18 +8,7 @@ import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
- 
-
-
-
-
-
-
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
@@ -40,7 +27,6 @@ public class ConfigurationActionImpl implements ConfigurationAction {
         if (!cmd.equals(Constants.UPDATE)) {
             return;
         }
-
 		
         String tabs2 = ParamUtil.getString(actionRequest, "tabs2", "basic-csv");
         String csvSeparator = null;
@@ -48,17 +34,8 @@ public class ConfigurationActionImpl implements ConfigurationAction {
         String jobtitleCsvStatus = null;
         String birthdayCsvStatus = null;
         String birthdayCsvOptions = null;
-        String howmanyCf = "0";
-        String cfName = "";
-		int k = 0;
-		String[] customFields = new String[20];
+        String customFields = "";
 
-		ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		long userId = themeDisplay.getUserId(); 
-        //long companyId = themeDisplay.getCompanyId(); // default company
-        User user = UserLocalServiceUtil.getUser(userId);
-		Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames();			
-		List<String> listCf = Collections.list(attributeNames);
 
         if (tabs2.equals("basic-csv")) {
 	        csvSeparator = ParamUtil.getString(actionRequest, "csvSeparator", ";");
@@ -74,15 +51,11 @@ public class ConfigurationActionImpl implements ConfigurationAction {
 	        	_log.debug("birthdayCsvOptions " + birthdayCsvOptions);
 	        }
         } else {
-        	howmanyCf = ParamUtil.getString(actionRequest, "howmanyCf", "0");
-    		for (int j = 0; j < listCf.size() && j < 20; j++) {
-    			k = j + 1;
-    			cfName = "cF" + k;
-    			customFields[j] = ParamUtil.getString(actionRequest, cfName, "");
-    			 if(_log.isDebugEnabled()) {
-    				 _log.debug(cfName + " " + customFields[j]);
-    			 }
-    		}
+        	customFields = ParamUtil.getString(actionRequest, "customFields", "");
+        	//String cfs[] = customFields.split(",");
+	        if(_log.isDebugEnabled()) {
+	        	_log.debug("customFields " + customFields);
+	        }
         }
  try {
         String portletResource = ParamUtil.getString(actionRequest,"portletResource");
@@ -94,12 +67,7 @@ public class ConfigurationActionImpl implements ConfigurationAction {
 	        preferences.setValue("birthdayCsvStatus", birthdayCsvStatus);
 	        preferences.setValue("birthdayCsvOptions", birthdayCsvOptions);
         } else {
-        	preferences.setValue("howmanyCf", howmanyCf);
-    		for (int j = 0; j < listCf.size() && j < 20; j++) {
-    			k = j + 1;
-    			cfName = "cF" + k;
-    			preferences.setValue(cfName,customFields[j]);
-    		}        	
+        	preferences.setValue("customFields", customFields);
         }
         preferences.store();
  

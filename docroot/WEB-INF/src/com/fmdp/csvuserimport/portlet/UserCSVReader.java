@@ -81,20 +81,22 @@ public class UserCSVReader {
     	String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
     	String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
     	String birthdayCsvOptions = preferences.getValue("birthdayCsvOptions","dd-MM-yyyy");
-    	String howmanyCf = preferences.getValue("howmanyCf","0");
-    	
+    	String customFields = preferences.getValue("customFields","0");
+    	String[] cFs = customFields.split(",");
     	int k = 0;
-		String[] customFields = new String[] {
+		String[] cFields = new String[] {
 				null, null, null, null, null,
 				null, null, null, null, null,
 				null, null, null, null, null,
 				null, null, null, null, null};
 		String cfName = "";
-    	for (int j = 0; j < 20 && j < Integer.parseInt(howmanyCf); j++) {
+    	for (int j = 0; j < 20 && j < cFs.length; j++) {
 			k = j + 1;
-			cfName = "customField" + k;
-    		customFields[j] = preferences.getValue(cfName,"");
-    		if (customFields[j] == "") customFields[j] = null;
+			cfName = "cf" + k;
+    		cFields[j] = cfName;
+    	}
+    	for(int z = k; z < 20; z++){
+    		cFields[z] = null;
     	}
     	if(_log.isInfoEnabled()) {
     	    _log.info("csvSeparator " + csvSeparator);
@@ -131,25 +133,28 @@ public class UserCSVReader {
         header[5] = impMale; 
         header[6] = impJobTitle; 
         header[7] = impBirthday;
-    	for (int j = 0; j < 20 ; j++) {
-    		k = j + 1;
-    		header[k] = customFields[j];
+    	for (int j = 8; j < 28 ; j++) {
+    		header[j] = cFields[j-8];
     	}
+    	if(_log.isInfoEnabled()) {
+        	_log.info("Header for mapping: "+ Arrays.toString(header));
+        }
     	inFile = new CsvBeanReader(new FileReader(urldecoded), pref);
        
+    	// header verify
     	final String[] header_temp = inFile.getHeader(true);
     	List<String> expectedHeaders = Arrays.asList("username","email","firstName","lastName",
         		"password","male","jobTitle","birthday"
-        		,"customField1","customField2","customField3","customField4","customField5"
-        		,"customField6","customField7","customField8","customField9","customField10"
-        		,"customField11","customField12","customField13","customField14","customField15"
-        		,"customField16","customField17","customField18","customField19","customField20");
+        		,"cf1","cf2","cf3","cf4","cf5"
+        		,"cf6","cf7","cf8","cf9","cf10"
+        		,"cf11","cf12","cf13","cf14","cf15"
+        		,"cf16","cf17","cf18","cf19","cf20");
 
         if (!Arrays.asList(header_temp).containsAll(expectedHeaders)){
             // not all headers present - handle appropriately 
             // (e.g. throw exception)
             if(_log.isInfoEnabled()) {
-            	_log.info("Header: "+ Arrays.toString(header_temp));
+            	_log.info("Header in CSV file: "+ Arrays.toString(header_temp));
                 _log.info("Expected header not found in the CSV file.");
             }
 

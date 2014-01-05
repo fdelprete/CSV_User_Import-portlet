@@ -21,26 +21,26 @@ public class CsvUserBean {
 	String jobTitle;
 	Date birthday;
 	String impStatus;
-	String cF1;
-	String cF2;
-	String cF3;
-	String cF4;
-	String cF5;
-	String cF6;
-	String cF7;
-	String cF8;
-	String cF9;
-	String cF10;
-	String cF11;
-	String cF12;
-	String cF13;
-	String cF14;
-	String cF15;
-	String cF16;
-	String cF17;
-	String cF18;
-	String cF19;
-	String cF20;
+	String cf1;
+	String cf2;
+	String cf3;
+	String cf4;
+	String cf5;
+	String cf6;
+	String cf7;
+	String cf8;
+	String cf9;
+	String cf10;
+	String cf11;
+	String cf12;
+	String cf13;
+	String cf14;
+	String cf15;
+	String cf16;
+	String cf17;
+	String cf18;
+	String cf19;
+	String cf20;
 
 	public long getLiferayUserId() {
 		return liferayUserId;
@@ -122,164 +122,164 @@ public class CsvUserBean {
 		this.impStatus = impStatus;
 	}
 
-	public String getCF1() {
-		return cF1;
+	public String getCf1() {
+		return cf1;
 	}
 
-	public void setCF1(String cF1) {
-		this.cF1 = cF1;
+	public void setCf1(String cf1) {
+		this.cf1 = cf1;
 	}
 
-	public String getCF2() {
-		return cF2;
+	public String getCf2() {
+		return cf2;
 	}
 
-	public void setCF2(String cF2) {
-		this.cF2 = cF2;
+	public void setCf2(String cf2) {
+		this.cf2 = cf2;
 	}
 
-	public String getCF3() {
-		return cF3;
+	public String getCf3() {
+		return cf3;
 	}
 
-	public void setCF3(String cF3) {
-		this.cF3 = cF3;
+	public void setCf3(String cf3) {
+		this.cf3 = cf3;
 	}
 
-	public String getCF4() {
-		return cF4;
+	public String getCf4() {
+		return cf4;
 	}
 
-	public void setCF4(String cF4) {
-		this.cF4 = cF4;
+	public void setCf4(String cf4) {
+		this.cf4 = cf4;
 	}
 
-	public String getCF5() {
-		return cF5;
+	public String getCf5() {
+		return cf5;
 	}
 
-	public void setCF5(String cF5) {
-		this.cF5 = cF5;
+	public void setCf5(String cf5) {
+		this.cf5 = cf5;
 	}
 
-	public String getCF6() {
-		return cF6;
+	public String getCf6() {
+		return cf6;
 	}
 
-	public void setCF6(String cF6) {
-		this.cF6 = cF6;
+	public void setCf6(String cf6) {
+		this.cf6 = cf6;
 	}
 
-	public String getCF7() {
-		return cF7;
+	public String getCf7() {
+		return cf7;
 	}
 
-	public void setCF7(String cF7) {
-		this.cF7 = cF7;
+	public void setCf7(String cf7) {
+		this.cf7 = cf7;
 	}
 
-	public String getCF8() {
-		return cF8;
+	public String getCf8() {
+		return cf8;
 	}
 
-	public void setCF8(String cF8) {
-		this.cF8 = cF8;
+	public void setCf8(String cf8) {
+		this.cf8 = cf8;
 	}
 
-	public String getCF9() {
-		return cF9;
+	public String getCf9() {
+		return cf9;
 	}
 
-	public void setCF9(String cF9) {
-		this.cF9 = cF9;
+	public void setCf9(String cf9) {
+		this.cf9 = cf9;
 	}
 
-	public String getCF10() {
-		return cF10;
+	public String getCf10() {
+		return cf10;
 	}
 
-	public void setCF10(String cF10) {
-		this.cF10 = cF10;
+	public void setCf10(String cf10) {
+		this.cf10 = cf10;
 	}
 
-	public String getCF11() {
-		return cF11;
+	public String getCf11() {
+		return cf11;
 	}
 
-	public void setCF11(String cF11) {
-		this.cF11 = cF11;
+	public void setCf11(String cf11) {
+		this.cf11 = cf11;
 	}
 
-	public String getCF12() {
-		return cF12;
+	public String getCf12() {
+		return cf12;
 	}
 
-	public void setCF12(String cF12) {
-		this.cF12 = cF12;
+	public void setCf12(String cf12) {
+		this.cf12 = cf12;
 	}
 
-	public String getCF13() {
-		return cF13;
+	public String getCf13() {
+		return cf13;
 	}
 
-	public void setCF13(String cF13) {
-		this.cF13 = cF13;
+	public void setCf13(String cf13) {
+		this.cf13 = cf13;
 	}
 
-	public String getCF14() {
-		return cF14;
+	public String getCf14() {
+		return cf14;
 	}
 
-	public void setCF14(String cF14) {
-		this.cF14 = cF14;
+	public void setCf14(String cf14) {
+		this.cf14 = cf14;
 	}
 
-	public String getCF15() {
-		return cF15;
+	public String getCf15() {
+		return cf15;
 	}
 
-	public void setCF15(String cF15) {
-		this.cF15 = cF15;
+	public void setCf15(String cf15) {
+		this.cf15 = cf15;
 	}
 
-	public String getCF16() {
-		return cF16;
+	public String getCf16() {
+		return cf16;
 	}
 
-	public void setCF16(String cF16) {
-		this.cF16 = cF16;
+	public void setCf16(String cf16) {
+		this.cf16 = cf16;
 	}
 
-	public String getCF17() {
-		return cF17;
+	public String getCf17() {
+		return cf17;
 	}
 
-	public void setCF17(String cF17) {
-		this.cF17 = cF17;
+	public void setCf17(String cf17) {
+		this.cf17 = cf17;
 	}
 
-	public String getCF18() {
-		return cF18;
+	public String getCf18() {
+		return cf18;
 	}
 
-	public void setCF18(String cF18) {
-		this.cF18 = cF18;
+	public void setCf18(String cf18) {
+		this.cf18 = cf18;
 	}
 
-	public String getCF19() {
-		return cF19;
+	public String getCf19() {
+		return cf19;
 	}
 
-	public void setCF19(String cF19) {
-		this.cF19 = cF19;
+	public void setCf19(String cf19) {
+		this.cf19 = cf19;
 	}
 
-	public String getCF20() {
-		return cF20;
+	public String getCf20() {
+		return cf20;
 	}
 
-	public void setCF20(String cF20) {
-		this.cF20 = cF20;
+	public void setCf20(String cf20) {
+		this.cf20 = cf20;
 	}
 
 	@Override

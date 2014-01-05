@@ -36,6 +36,11 @@ page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
 page import="java.util.Enumeration" %>
 <%@
+page import="com.liferay.portal.kernel.util.ListUtil" %><%@
+page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
+page import="com.liferay.portal.kernel.util.KeyValuePair" %><%@
+page import="com.liferay.portal.kernel.util.KeyValuePairComparator" %><%@
+page import="com.liferay.portal.kernel.util.ObjectValuePair" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.model.*" %><%@
@@ -59,19 +64,12 @@ String maleCsvStatus = preferences.getValue("maleCsvStatus","ignore");
 String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
 String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
 String birthdayCsvOptions = preferences.getValue("birthdayCsvOptions","dd-MM-yyyy");
-String[] customFields = new String[20];
-String cfName = "";
-int k = 0;
-
-for (int j = 0; j < 20; j++) {
-	k = j + 1;
-	cfName = "cF" + k;
-	customFields[j] = preferences.getValue(cfName,"");
-}        	
-
+String[] currentCustomFields = preferences.getValue("customFields","").split(",");
 
 String tabs2 = ParamUtil.getString(request, "tabs2", "basic-csv");
 String redirect = ParamUtil.getString(request, "redirect");
+Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames();			
+
 %>
 
 <liferay-portlet:actionURL var="configurationURL" portletConfiguration= "true"/>
@@ -82,14 +80,15 @@ String redirect = ParamUtil.getString(request, "redirect");
 	<portlet:param name="redirect" value="<%= redirect %>" />
 </liferay-portlet:renderURL>
 <aui:form method="post" action="<%=configurationURL.toString()%>"
-      name= "<portlet:namespace />fm" >
+      name= "fm" 
+      onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveCsvImport();" %>'>
 		<aui:input name="tabs2" type="hidden" value="<%= tabs2 %>" /> 
 		<aui:input name="<%=Constants.CMD%>" type="hidden" value="<%=Constants.UPDATE%>" />
 		<aui:input name="redirect" type="hidden" value="<%= configurationRenderURL.toString() %>" />
        	<%
 		String tabs1Names = "basic-csv";
 
-		if (true) {
+		if (attributeNames.hasMoreElements()) {
 			tabs1Names = tabs1Names.concat(",custom-csv");
 		}
 		%>
@@ -158,47 +157,77 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</aui:fieldset>
 			</c:when>
 			<c:when test='<%= tabs2.equals("custom-csv") %>'>
-
+				<div class="alert alert-info">
+					<liferay-ui:message key="custom-field-help" />
+				</div>
 			<%
-			int howmanyCf = 0;
-			Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames();			
 			List<String> listCf = Collections.list(attributeNames);
-			while(attributeNames.hasMoreElements()){
-				howmanyCf = howmanyCf + 1;
-
-			 	String attributeName = attributeNames.nextElement();
-
-//				String localizedName = LanguageUtil.get(pageContext, attributeName);
-
-//				if (attributeName.equals(localizedName)) {
-//					localizedName = TextFormatter.format(attributeName, TextFormatter.J);
-//				}
-			}
 			%>
-			<aui:input name="howmanyCf" type="hidden" value="<%= howmanyCf %>" />
 	       	<aui:fieldset cssClass='<%= renderResponse.getNamespace() + "prefList" %>'>
+	       	<aui:input name='customFields' type="hidden" value="<%= StringUtil.merge(currentCustomFields) %>" />
 			<%
-			String label = "";
-			String name = "";
-			for (int j = 1; j <= listCf.size() && j <= 20; j++) {
-				label = "customField" + j;
-				name = "cF" + j;
-			%>
 
-				<aui:select label="<%=label%>"  name="<%=name %>" showEmptyOption="true" >
-					<%
-					for (int i = 0; i < listCf.size(); i++) {
-					%>
-					<aui:option label="<%= listCf.get(i) %>" 
-					  value="<%= listCf.get(i) %>" 
-					  selected='<%= listCf.get(i).equals(customFields[j-1]) %>'/>
-		 			<%}%>
-		 		</aui:select>
-		 	<%}%>
+		// Left list
+
+		List leftList = new ArrayList();
+
+		for (String currentCf : currentCustomFields) {
+			leftList.add(new KeyValuePair(currentCf, currentCf));
+		}
+
+		// Right list
+
+		List rightList = new ArrayList();
+
+		for (String availableCf : listCf) {
+			if (!ArrayUtil.contains(currentCustomFields, availableCf)) {
+				
+				rightList.add(new KeyValuePair(availableCf, availableCf));
+			}
+		}
+
+		rightList = ListUtil.sort(rightList, new KeyValuePairComparator(false, true));
+		%>
+			
+		<liferay-ui:input-move-boxes
+			leftBoxName="currentCustomFields"
+			leftList="<%= leftList %>"
+			leftReorder="true"
+			leftTitle="current"
+			rightBoxName="availableCustomFields"
+			rightList="<%= rightList %>"
+			rightTitle="available"
+		/>
+
 	       	</aui:fieldset>
 
 			</c:when>
 		</c:choose>
+<aui:script use="liferay-util-list-fields">
+	Liferay.provide(
+		window,
+		'<portlet:namespace />saveCfs',
+		function() {
+			document.<portlet:namespace />fm.<portlet:namespace />customFields.value = Liferay.Util.listSelect(document.<portlet:namespace />fm.<portlet:namespace />currentCustomFields);
+		},
+		['liferay-util-list-fields']
+	);
+</aui:script>		
+<aui:script>
+	function <portlet:namespace />saveCsvImport() {
+		if (document.<portlet:namespace />fm.<portlet:namespace />tabs2.value=='custom-csv')  {
+			if  (document.<portlet:namespace />fm.<portlet:namespace />currentCustomFields.length <= 20) {
+				<portlet:namespace />saveCfs();
+				submitForm(document.<portlet:namespace />fm);
+			} else {
+				alert("Maximum number of imported custom fields is 20.");
+			}
+		} else {
+			submitForm(document.<portlet:namespace />fm);
+		}
+	}
+</aui:script>
+
         <aui:button-row>
         	<aui:button type="submit" />
         </aui:button-row>
