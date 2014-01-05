@@ -9,14 +9,17 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
+
 import org.supercsv.cellprocessor.ParseBool;
 import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
+
 import com.fmdp.csvuserimport.portlet.model.CsvUserBean;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -49,7 +52,13 @@ public class UserCSVReader {
     return INSTANCE;
   }
 
-  final CellProcessor[] processors = new CellProcessor[] {null, null, null, null, null, new ParseBool(), null, new ParseDate("dd-MM-yyyy")};
+  final CellProcessor[] processors = new CellProcessor[] {
+		  null, null, null, null, null, 
+		  new ParseBool(), null, new ParseDate("dd-MM-yyyy"),
+		  null, null, null, null, null, 
+		  null, null, null, null, null, 
+		  null, null, null, null, null, 
+		  null, null, null, null, null};
 
   public List<CsvUserBean> readUsers(final ActionRequest request, String Fname) {
     ICsvBeanReader inFile = null;
@@ -72,7 +81,21 @@ public class UserCSVReader {
     	String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
     	String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
     	String birthdayCsvOptions = preferences.getValue("birthdayCsvOptions","dd-MM-yyyy");
+    	String howmanyCf = preferences.getValue("howmanyCf","0");
     	
+    	int k = 0;
+		String[] customFields = new String[] {
+				null, null, null, null, null,
+				null, null, null, null, null,
+				null, null, null, null, null,
+				null, null, null, null, null};
+		String cfName = "";
+    	for (int j = 0; j < 20 && j < Integer.parseInt(howmanyCf); j++) {
+			k = j + 1;
+			cfName = "customField" + k;
+    		customFields[j] = preferences.getValue(cfName,"");
+    		if (customFields[j] == "") customFields[j] = null;
+    	}
     	if(_log.isInfoEnabled()) {
     	    _log.info("csvSeparator " + csvSeparator);
     	    _log.info("maleCsvStatus " + maleCsvStatus);
@@ -99,14 +122,28 @@ public class UserCSVReader {
         		processors[7] = new ParseDate(birthdayCsvOptions);
         	}
         }
-        final String[] header = new String[] { "username", "email", "firstName", "lastName", "password", 
-        		impMale, impJobTitle, impBirthday};
-
+        final String[] header = new String[28];
+        header[0] = "username";
+        header[1] ="email";
+        header[2] = "firstName"; 
+        header[3] = "lastName";
+        header[4] ="password";
+        header[5] = impMale; 
+        header[6] = impJobTitle; 
+        header[7] = impBirthday;
+    	for (int j = 0; j < 20 ; j++) {
+    		k = j + 1;
+    		header[k] = customFields[j];
+    	}
     	inFile = new CsvBeanReader(new FileReader(urldecoded), pref);
        
     	final String[] header_temp = inFile.getHeader(true);
     	List<String> expectedHeaders = Arrays.asList("username","email","firstName","lastName",
-        		"password","male","jobTitle","birthday");
+        		"password","male","jobTitle","birthday"
+        		,"customField1","customField2","customField3","customField4","customField5"
+        		,"customField6","customField7","customField8","customField9","customField10"
+        		,"customField11","customField12","customField13","customField14","customField15"
+        		,"customField16","customField17","customField18","customField19","customField20");
 
         if (!Arrays.asList(header_temp).containsAll(expectedHeaders)){
             // not all headers present - handle appropriately 

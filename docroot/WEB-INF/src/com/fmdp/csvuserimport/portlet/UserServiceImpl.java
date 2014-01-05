@@ -44,8 +44,8 @@ public class UserServiceImpl {
   }
 
   public User addUser(ActionRequest request,
-                      CsvUserBean userBean, Long roleId) {
-    User user = addLiferayUser(request, userBean, roleId);
+                      CsvUserBean userBean, Long roleId, Long organizationId) {
+    User user = addLiferayUser(request, userBean, roleId, organizationId);
     if (user != null) {
 	    userBean.setLiferayUserId(user.getUserId());
 	    if (_log.isInfoEnabled()){
@@ -60,7 +60,7 @@ public class UserServiceImpl {
   }
 
   private User addLiferayUser(ActionRequest request,
-                              CsvUserBean userBean, Long roleId) {
+                              CsvUserBean userBean, Long roleId, Long organizationId) {
     User user = null;
     try {
 //      PortletSession portletSession = request.getPortletSession();
@@ -104,9 +104,14 @@ public class UserServiceImpl {
       }
 
       long[] groupIds = null;
+      
       long[] organizationIds = null;
+      if (organizationId != 0 ) {
+    	  organizationIds = new long[1];
+    	  organizationIds[0] = organizationId;
+      }
+      
       long[] roleIds = null;
-      //String role = (String)request.getParameter("roleId");
       if (roleId != 0 ) {
     	  roleIds = new long[1];
     	  roleIds[0] = roleId;

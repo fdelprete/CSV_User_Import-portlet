@@ -65,7 +65,7 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	</div>
 	<aui:fieldset cssClass='fieldset'>
 		<aui:input type="file" name="fileName" size="75" helpMessage="load-csv-file"/>
-		<aui:select label="role" name="roleId" helpMessage="select-role" showEmptyOption="true" >
+		<aui:select label="reg-role" name="roleId" helpMessage="select-role" showEmptyOption="true" >
 	             <%
 	                    for (int i = 0; i < roles.size(); i++) {
 	                    	

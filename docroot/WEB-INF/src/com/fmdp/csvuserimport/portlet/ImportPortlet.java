@@ -50,6 +50,7 @@ public class ImportPortlet extends MVCPortlet {
 				throw new IOException("File size is 0");
 			}
 			Long roleId = ParamUtil.getLong(uploadRequest, "roleId");
+			Long organizationId = ParamUtil.getLong(uploadRequest, "organizationId");
 			
 			String sourceFileName = uploadRequest.getFileName("fileName");
 			File file = uploadRequest.getFile("fileName");
@@ -62,10 +63,12 @@ public class ImportPortlet extends MVCPortlet {
 			int count_good = 0;
 
 			if (_log.isInfoEnabled()) {
+				_log.info("roleId " + roleId);
+				_log.info("organizationId " + organizationId);
 				_log.info("##### Started importing #####");
-				_log.info("roleId " + ParamUtil.getLong(uploadRequest, "roleId"));
 			}
 			UserCacheEngine userCacheEngine = UserCacheEngine.getInstance();
+
 			if (_log.isInfoEnabled()) {
 				_log.info("Now we're going to add users to portal");
 			}
@@ -78,7 +81,7 @@ public class ImportPortlet extends MVCPortlet {
 							+ user.getFirstName() + " " + user.getLastName());
 				}
 				count = count + 1;
-				usi.addUser(actionRequest, user, roleId);
+				usi.addUser(actionRequest, user, roleId, organizationId);
 				if (!user.getImpStatus().equals("User imported.")) {
 					if (_log.isInfoEnabled()) {
 						_log.info(" User not added to portal");
