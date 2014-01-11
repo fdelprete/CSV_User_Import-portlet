@@ -11,7 +11,7 @@ if (Validator.isNotNull(portletResource)) {
     preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletResource);
 }
 
-String csvSeparator = preferences.getValue("csvSeparator",";");
+String csvSeparator = preferences.getValue("csvSeparator","EXCEL_NORTH_EUROPE_PREFERENCE");
 String maleCsvStatus = preferences.getValue("maleCsvStatus","ignore");
 String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
 String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
@@ -40,6 +40,9 @@ Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames()
 		value="<%=Constants.UPDATE%>" />
 	<aui:input name="redirect" type="hidden"
 		value="<%= configurationRenderURL.toString() %>" />
+	<liferay-ui:success key="success"
+	message="csv-config-saved"/>
+		
 	<%
 	String tabs1Names = "basic-csv";
 
@@ -51,15 +54,61 @@ Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames()
 		url="<%= configurationRenderURL %>" />
 	<c:choose>
 		<c:when test='<%= tabs2.equals("basic-csv") %>'>
+		
 			<aui:fieldset cssClass='<%= renderResponse.getNamespace() + "prefList" %>'>
+				<aui:field-wrapper inlineField="true">
+					<liferay-ui:toggle id="table-toggle-csv-pref_id"
+						hideMessage='<%= "&laquo; " + LanguageUtil.get(pageContext, "hide-csv-pref") %>'
+						showMessage='<%= LanguageUtil.get(pageContext, "show-csv-pref") + " &raquo; " %>'
+						defaultShowContent="false" />
+					<div id="table-toggle-csv-pref_id"
+						style='display: <liferay-ui:toggle-value defaultValue="false" id="table-toggle-csv-pref_id"/>; padding-top:10px;'>
+						<table border="0" class="table table-striped">
+							<tr class="a">
+								<td align="left"><strong><liferay-ui:message key="option" /></strong></td>
+								<th align="center"><liferay-ui:message key="quote-char" /></th>
+								<th align="center"><liferay-ui:message key="delimiter-char" /></th>
+								<th align="center"><liferay-ui:message key="end-of-line-symbols" /></th>
+							</tr>
+								<tr class="b">
+								<td align="left">STANDARD_PREFERENCE</td>
+								<td align="center">&quot;</td>
+								<td align="center">,</td>
+								<td align="center">\r\n</td>
+							</tr>
+							<tr class="a">
+								<td align="left">EXCEL_PREFERENCE</td>
+								<td align="center">&quot;</td>
+								<td align="center">,</td>
+								<td align="center">\n</td>
+							</tr>
+							<tr class="b">
+								<td align="left">EXCEL_NORTH_EUROPE_PREFERENCE</td>
+								<td align="center">&quot;</td>
+								<td align="center">;</td>
+								<td align="center">\n</td>
+							</tr>
+							<tr class="a">
+								<td align="left">TAB_PREFERENCE</td>
+								<td align="center">&quot;</td>
+								<td align="center">\t</td>
+								<td align="center">\n</td>
+							</tr>
+						</table>
+					</div>
+				</aui:field-wrapper>
 				<aui:select label="csv-separator" name="csvSeparator"
 					showEmptyOption="false">
-					<aui:option label='semicolon'
-						selected='<%= csvSeparator.equals(";") %>' value=";" />
-					<aui:option label='comma'
-						selected='<%= csvSeparator.equals(",") %>' value="," />
+					<aui:option label='standard-pref'
+						selected='<%= csvSeparator.equals("STANDARD_PREFERENCE") %>' value="STANDARD_PREFERENCE" />
+					<aui:option label='excel-pref'
+						selected='<%= csvSeparator.equals("EXCEL_PREFERENCE") %>' value="EXCEL_PREFERENCE" />
+					<aui:option label='excel-north-europe-pref'
+						selected='<%= csvSeparator.equals("EXCEL_NORTH_EUROPE_PREFERENCE") %>' value="EXCEL_NORTH_EUROPE_PREFERENCE" />
+					<aui:option label='tab-pref'
+						selected='<%= csvSeparator.equals("TAB_PREFERENCE") %>' value="TAB_PREFERENCE" />
 				</aui:select>
-
+				<div class="separator"></div>
 				<table class="table table-bordered table-hover table-striped">
 					<thead class="table-columns">
 						<tr>

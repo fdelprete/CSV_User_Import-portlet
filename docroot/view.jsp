@@ -12,8 +12,17 @@ if (Validator.isNotNull(portletResource)) {
     preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletResource);
 }
 
-String csvSeparator = preferences.getValue("csvSeparator",";");
-
+String csvSeparator = preferences.getValue("csvSeparator","EXCEL_NORTH_EUROPE_PREFERENCE");
+String csvSep = null;
+if (csvSeparator.equals("EXCEL_PREFERENCE")){
+	csvSep = ",";
+} else if (csvSeparator.equals("STANDARD_PREFERENCE")){
+	csvSep = ",";
+} else if (csvSeparator.equals("TAB_PREFERENCE")){
+	csvSep = "<tab>";
+} else {
+	csvSep = ";";
+}
 List<Role> roles = RoleLocalServiceUtil.getRoles(company.getCompanyId());
 long parentOrganizationId = OrganizationConstants.ANY_PARENT_ORGANIZATION_ID;
 List<Organization> organizations = OrganizationLocalServiceUtil.getOrganizations(company.getCompanyId(),parentOrganizationId);
@@ -28,9 +37,8 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 <portlet:actionURL var="uploadCsvURL" name="uploadCsv">
 	<portlet:param name="jspPage" value="/view.jsp" />
 </portlet:actionURL>
-<liferay-ui:header cssClass="header-back-to" title="CSV User Import">
-</liferay-ui:header>
-
+<liferay-ui:header title="javax.portlet.short-title">
+	</liferay-ui:header>
 
 <liferay-ui:upload-progress id="<%= uploadProgressId %>"
 	message="uploading" redirect="<%= uploadCsvURL %>" />
@@ -46,11 +54,13 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	<div class="alert alert-info">
 		<liferay-ui:message key="file-must-be-csv" />
 		<liferay-ui:message
-			key='<%= LanguageUtil.format(pageContext, "first-row-format", csvSeparator) %>' />
+			key='<%= LanguageUtil.format(pageContext, "first-row-format", csvSep) %>' />
 	</div>
 	<aui:fieldset cssClass='fieldset'>
 		<aui:input type="file" name="fileName" size="75"
-			helpMessage="load-csv-file" />
+			helpMessage="load-csv-file">
+			<aui:validator name="acceptFiles">'csv,txt'</aui:validator>
+		</aui:input>
 		<aui:select label="reg-role" name="roleId" helpMessage="select-role"
 			showEmptyOption="true">
 			<%

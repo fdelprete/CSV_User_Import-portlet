@@ -13,8 +13,10 @@ import java.util.List;
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
 
+import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ParseBool;
 import org.supercsv.cellprocessor.ParseDate;
+import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
@@ -53,8 +55,8 @@ public class UserCSVReader {
   }
 
   final CellProcessor[] processors = new CellProcessor[] {
-		  null, null, null, null, null, 
-		  new ParseBool(), null, new ParseDate("dd-MM-yyyy"),
+		  new NotNull(), new NotNull(), new NotNull(), new NotNull(), new NotNull(), 
+		  new Optional(new ParseBool()), null, new Optional(new ParseDate("dd-MM-yyyy")),
 		  null, null, null, null, null, 
 		  null, null, null, null, null, 
 		  null, null, null, null, null, 
@@ -65,13 +67,10 @@ public class UserCSVReader {
 
     List<CsvUserBean> users = new ArrayList<CsvUserBean>();
     
-    if(_log.isInfoEnabled()) {
-      _log.info("Try to open the uploaded csv file");
+    if(_log.isDebugEnabled()) {
+      _log.debug("Try to open the uploaded csv file");
     }
       String urldecoded = UserCSVReader.decodeUrl(Fname.replace('/', File.separatorChar));
-      if(_log.isInfoEnabled()) {
-    	    _log.info("UrlDecoded " + urldecoded);
-      }
       	
     try {
     	String portletInstanceId = (String) request.getAttribute(WebKeys.PORTLET_ID);
@@ -81,7 +80,7 @@ public class UserCSVReader {
     	String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
     	String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
     	String birthdayCsvOptions = preferences.getValue("birthdayCsvOptions","dd-MM-yyyy");
-    	String customFields = preferences.getValue("customFields","0");
+    	String customFields = preferences.getValue("customFields","");
     	String[] cFs = customFields.split(",");
     	int k = 0;
 		String[] cFields = new String[] {
@@ -98,18 +97,17 @@ public class UserCSVReader {
     	for(int z = k; z < 20; z++){
     		cFields[z] = null;
     	}
-    	if(_log.isInfoEnabled()) {
-    	    _log.info("csvSeparator " + csvSeparator);
-    	    _log.info("maleCsvStatus " + maleCsvStatus);
-    	    _log.info("jobtitleCsvStatus " + jobtitleCsvStatus);
-    	    _log.info("birthdayCsvStatus " + birthdayCsvStatus);
-    	    _log.info("birthdayCsvOptions " + birthdayCsvOptions);
-    	}
-    	CsvPreference pref = CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE;
-    	if (csvSeparator.equals(",")){
+    	CsvPreference pref = null;
+    	if (csvSeparator.equals("EXCEL_PREFERENCE")){
     		pref = CsvPreference.EXCEL_PREFERENCE;
+    	} else if (csvSeparator.equals("STANDARD_PREFERENCE")){
+    		pref = CsvPreference.STANDARD_PREFERENCE;
+    	} else if (csvSeparator.equals("TAB_PREFERENCE")){
+    		pref = CsvPreference.TAB_PREFERENCE;
+    	} else {
+    		pref = CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE;
     	}
-        String impMale = null;
+    	String impMale = null;    		
         if (maleCsvStatus.equals("optional")){
         	impMale = "male";
         }
@@ -121,7 +119,7 @@ public class UserCSVReader {
         if (birthdayCsvStatus.equals("optional")){
         	impBirthday = "birthday";
         	if(!birthdayCsvOptions.equals("dd-MM-yyyy")){
-        		processors[7] = new ParseDate(birthdayCsvOptions);
+        		processors[7] = new Optional(new ParseDate(birthdayCsvOptions));
         	}
         }
         final String[] header = new String[28];
@@ -136,8 +134,8 @@ public class UserCSVReader {
     	for (int j = 8; j < 28 ; j++) {
     		header[j] = cFields[j-8];
     	}
-    	if(_log.isInfoEnabled()) {
-        	_log.info("Header for mapping: "+ Arrays.toString(header));
+    	if(_log.isDebugEnabled()) {
+        	_log.debug("Header for mapping: "+ Arrays.toString(header));
         }
     	inFile = new CsvBeanReader(new FileReader(urldecoded), pref);
        
@@ -153,9 +151,9 @@ public class UserCSVReader {
         if (!Arrays.asList(header_temp).containsAll(expectedHeaders)){
             // not all headers present - handle appropriately 
             // (e.g. throw exception)
-            if(_log.isInfoEnabled()) {
-            	_log.info("Header in CSV file: "+ Arrays.toString(header_temp));
-                _log.info("Expected header not found in the CSV file.");
+            if(_log.isDebugEnabled()) {
+            	_log.debug("Header in CSV file: "+ Arrays.toString(header_temp));
+                _log.debug("Expected header not found in the CSV file.");
             }
 
         	SessionErrors.add(request,"expected-header-not-found-in-the-csv-file");
@@ -166,22 +164,23 @@ public class UserCSVReader {
         	return null;
         }
 
-        if(_log.isInfoEnabled()) {
-            _log.info("Reading users with properties: " + Arrays.toString(header) + " from CSV file.");
+        if(_log.isDebugEnabled()) {
+            _log.debug("Reading users with properties: " + Arrays.toString(header) + " from CSV file.");
         }
         CsvUserBean user;
         while ((user = inFile.read(CsvUserBean.class, header, processors)) != null) {
           users.add(user);
         }
-        if(_log.isInfoEnabled()) {
-            _log.info(users.size() + " users were read from CSV file.");
+        if(_log.isDebugEnabled()) {
+            _log.debug(users.size() + " users were read from CSV file.");
         }
       } catch (FileNotFoundException fnfe) {
-        _log.error("Can't find CSV file with users " + fnfe);
+    	  if(_log.isErrorEnabled()) {
+    		  _log.error("Can't find CSV file with users " + fnfe);
+    	  }
       } catch (IOException ioe) {
-        _log.error("IOException " + ioe);
+  		ioe.printStackTrace();
       } catch (PortalException e) {
-    	  _log.error("PortalException " + e);
 		e.printStackTrace();
 	} catch (SystemException e) {
 		e.printStackTrace();
@@ -189,6 +188,7 @@ public class UserCSVReader {
         try {
           inFile.close();
         } catch (IOException e) {
+        	e.printStackTrace();
         }
       }
 

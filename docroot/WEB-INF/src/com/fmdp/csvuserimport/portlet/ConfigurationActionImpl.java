@@ -9,12 +9,14 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
 
 public class ConfigurationActionImpl implements ConfigurationAction {
 	private static Log _log = LogFactoryUtil.getLog(ConfigurationActionImpl.class);
@@ -38,7 +40,7 @@ public class ConfigurationActionImpl implements ConfigurationAction {
 
 
         if (tabs2.equals("basic-csv")) {
-	        csvSeparator = ParamUtil.getString(actionRequest, "csvSeparator", ";");
+	        csvSeparator = ParamUtil.getString(actionRequest, "csvSeparator", "EXCEL_NORTH_EUROPE_PREFERENCE");
 	        maleCsvStatus = ParamUtil.getString(actionRequest, "maleCsvStatus", "ignore");
 	        jobtitleCsvStatus = ParamUtil.getString(actionRequest, "jobtitleCsvStatus", "ignore");
 	        birthdayCsvStatus = ParamUtil.getString(actionRequest, "birthdayCsvStatus", "ignore");
@@ -52,7 +54,6 @@ public class ConfigurationActionImpl implements ConfigurationAction {
 	        }
         } else {
         	customFields = ParamUtil.getString(actionRequest, "customFields", "");
-        	//String cfs[] = customFields.split(",");
 	        if(_log.isDebugEnabled()) {
 	        	_log.debug("customFields " + customFields);
 	        }
@@ -71,7 +72,7 @@ public class ConfigurationActionImpl implements ConfigurationAction {
         }
         preferences.store();
  
-        //SessionMessages.add(actionRequest, portletConfig.getPortletName()+ ".doConfigure");
+        SessionMessages.add(actionRequest, "success");
         SessionMessages.add(
         		                actionRequest,
         		                portletConfig.getPortletName() +

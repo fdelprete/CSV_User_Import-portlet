@@ -287,7 +287,12 @@ public class CsvUserBean {
 		return "UserBean [liferayUserId=" + liferayUserId + ", username="
 				+ username + ", email=" + email + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", male=" + male + ", password="
-				+ password + ", jobTitle=" + jobTitle +", birthday=" + birthday.toString() + ", status=" + impStatus + "]";
+				+ password + ", jobTitle=" + jobTitle +", birthday=" + birthday.toString()
+				+ ", cf1=" + cf1 + ", cf2=" + cf2 + ", cf3=" + cf3 + ", cf4=" + cf4 + ", cf5=" + cf5
+				+ ", cf6=" + cf6 + ", cf7=" + cf7 + ", cf8=" + cf8 + ", cf9=" + cf9 + ", cf10=" + cf10
+				+ ", cf11=" + cf11 + ", cf12=" + cf12 + ", cf13=" + cf13 + ", cf14=" + cf14 + ", cf15=" + cf15
+				+ ", cf16=" + cf16 + ", cf17=" + cf17 + ", cf18=" + cf18 + ", cf19=" + cf19 + ", cf20=" + cf20
+				+ ", status=" + impStatus + "]";
 	}
 
 

@@ -15,10 +15,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  *
  */
 public class UserCacheEngine {
-
-	String Fname;
 	
-	/** The Constant _log. */	
 	private static Log _log = LogFactoryUtil.getLog(UserCacheEngine.class);
 
 	private UserCSVReader userReader = UserCSVReader.getInstance();
@@ -41,11 +38,10 @@ public class UserCacheEngine {
 	}
 
 	public List<CsvUserBean> getUsers(ActionRequest actionRequest, String TheFile) {
-		Fname = TheFile;
-		if (_log.isInfoEnabled()){
-			_log.info("Initialising users.");
+		if (_log.isDebugEnabled()){
+			_log.debug("Initialising users.");
 		}
-		users = userReader.readUsers(actionRequest, Fname);
+		users = userReader.readUsers(actionRequest, TheFile);
 		return users;
 	}
 
@@ -53,10 +49,4 @@ public class UserCacheEngine {
 		this.users = users;
 	}
 	
-	public void setFname(String Fname) {
-		this.Fname = Fname;
-	}
-	public String getFname() {
-		return Fname;
-	}
 }

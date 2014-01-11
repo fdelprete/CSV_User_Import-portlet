@@ -43,9 +43,6 @@ public class ImportPortlet extends MVCPortlet {
 			
 			UploadPortletRequest uploadRequest = PortalUtil
 					.getUploadPortletRequest(actionRequest);
-			if (_log.isDebugEnabled()) {
-				_log.debug("Size: " + uploadRequest.getSize("fileName"));
-			}
 			if (uploadRequest.getSize("fileName") == 0) {
 				throw new IOException("File size is 0");
 			}
@@ -62,42 +59,42 @@ public class ImportPortlet extends MVCPortlet {
 			int count = 1;
 			int count_good = 0;
 
-			if (_log.isInfoEnabled()) {
-				_log.info("roleId " + roleId);
-				_log.info("organizationId " + organizationId);
-				_log.info("##### Started importing #####");
+			if (_log.isDebugEnabled()) {
+				_log.debug("roleId " + roleId);
+				_log.debug("organizationId " + organizationId);
+				_log.debug("##### Started importing #####");
 			}
 			UserCacheEngine userCacheEngine = UserCacheEngine.getInstance();
 
-			if (_log.isInfoEnabled()) {
-				_log.info("Now we're going to add users to portal");
+			if (_log.isDebugEnabled()) {
+				_log.debug("Now we're going to add users to portal");
 			}
 			List<CsvUserBean> users = userCacheEngine.getUsers(actionRequest,
 					file.getPath());
 			List<CsvUserBean> usersBad = new ArrayList<CsvUserBean>();
 			for (CsvUserBean user : users) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Processing " + count + " user. "
+				if (_log.isDebugEnabled()) {
+					_log.debug("Processing " + count + " user. "
 							+ user.getFirstName() + " " + user.getLastName());
 				}
 				count = count + 1;
 				usi.addUser(actionRequest, user, roleId, organizationId);
 				if (!user.getImpStatus().equals("User imported.")) {
-					if (_log.isInfoEnabled()) {
-						_log.info(" User not added to portal");
+					if (_log.isDebugEnabled()) {
+						_log.debug(" User not added to portal");
 					}
 					usersBad.add(user);
 				} else {
-					if (_log.isInfoEnabled()) {
-						_log.info(" User added to portal");
+					if (_log.isDebugEnabled()) {
+						_log.debug(" User added to portal");
 					}
 					count_good = count_good + 1;
 				}
 			}
-			if (_log.isInfoEnabled()) {
-				_log.info(users.size() + " Users were read from the CSV file");
-				_log.info(count_good + " Users were added to portal.");
-				_log.info("##### Finished importing. #####");
+			if (_log.isDebugEnabled()) {
+				_log.debug(users.size() + " Users were read from the CSV file");
+				_log.debug(count_good + " Users were added to portal.");
+				_log.debug("##### Finished importing. #####");
 			}
 
 			SessionMessages.add(actionRequest, "success");
@@ -113,12 +110,16 @@ public class ImportPortlet extends MVCPortlet {
 			actionRequest.setAttribute("count_good", count_good);
 
 		} catch (NullPointerException e) {
-			_log.error("Error: " + e);
+			if (_log.isErrorEnabled()) {
+				_log.error("Error: " + e);
+			}
 			SessionMessages.add(actionRequest, "error");
 		}
 
 		catch (IOException e1) {
-			_log.error("Error Reading The File.");
+			if (_log.isErrorEnabled()) {
+				_log.error("Error Reading The File. Error: " + e1);
+			}
 			SessionMessages.add(actionRequest, "error");
 		}
 
