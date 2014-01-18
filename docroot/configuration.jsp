@@ -202,7 +202,8 @@ Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames()
 				List leftList = new ArrayList();
 
 				for (String currentCf : currentCustomFields) {
-					leftList.add(new KeyValuePair(currentCf, currentCf));
+					if (!currentCf.equals(""))
+						leftList.add(new KeyValuePair(currentCf, currentCf));
 				}
 			
 				// Right list

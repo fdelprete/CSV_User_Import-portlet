@@ -94,7 +94,7 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	                    	String name = organization.getName();
 	             %>
 			<aui:option label='<%= organization.getName()%>'
-				value="<%= organization.getName() %>" />
+				value="<%= organization.getOrganizationId() %>" />
 			<%
 	                    }
 	             %>

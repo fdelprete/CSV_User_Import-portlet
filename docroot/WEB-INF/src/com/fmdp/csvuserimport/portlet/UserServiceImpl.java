@@ -111,7 +111,7 @@ public class UserServiceImpl {
 				organizationIds = new long[1];
 				organizationIds[0] = organizationId;
 			}
-
+			
 			long[] roleIds = null;
 			if (roleId != 0 ) {
 				roleIds = new long[1];

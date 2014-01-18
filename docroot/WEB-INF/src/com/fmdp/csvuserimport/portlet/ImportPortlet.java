@@ -64,6 +64,7 @@ public class ImportPortlet extends MVCPortlet {
 				_log.debug("organizationId " + organizationId);
 				_log.debug("##### Started importing #####");
 			}
+
 			UserCacheEngine userCacheEngine = UserCacheEngine.getInstance();
 
 			if (_log.isDebugEnabled()) {
