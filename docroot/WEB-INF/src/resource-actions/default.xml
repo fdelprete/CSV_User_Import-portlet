@@ -7,8 +7,6 @@
         <permissions>
             <supports>
                 <action-key>CONFIGURATION</action-key>
-                <action-key>PERMISSIONS</action-key>
-                <action-key>PREFERENCES</action-key>
                 <action-key>ADD_TO_PAGE</action-key>
                 <action-key>VIEW</action-key>
             </supports>
@@ -19,8 +17,6 @@
             <guest-defaults />
            <guest-unsupported>
                 <action-key>CONFIGURATION</action-key>
-                <action-key>PERMISSIONS</action-key>
-                <action-key>PREFERENCES</action-key>
                 <action-key>ADD_TO_PAGE</action-key>
                 <action-key>VIEW</action-key>
             </guest-unsupported>

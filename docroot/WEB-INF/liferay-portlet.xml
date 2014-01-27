@@ -13,23 +13,12 @@
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 		<css-class-wrapper>CSV_User_Import-portlet</css-class-wrapper>
+		<system>true</system>
 	</portlet>
 
 	<role-mapper>
 		<role-name>administrator</role-name>
 		<role-link>Administrator</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>guest</role-name>
-		<role-link>Guest</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>power-user</role-name>
-		<role-link>Power User</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>user</role-name>
-		<role-link>User</role-link>
 	</role-mapper>
 	
 </liferay-portlet-app>
