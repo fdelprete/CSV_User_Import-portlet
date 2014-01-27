@@ -1,8 +1,16 @@
 <h2>Introduction</h2>
 This is a control panel Liferay portlet you can use to import and create portal users from a CSV file.
-
+<h4>How to use</h4>
+<ol>
+<li>Prepare the CSV file (see below for the CSV header that is mandatory)
+<li>Optionally select the regular role and/or the organization to assign to the imported users
+<li>Upload the file
+<li>Done!
+</ol>
+The import process checks that the screen name and the email address are unique. If a user with a non unique username or email is present in the csv file, that user will be skipped and after the import process completes they'll be shown in a table.
+With the Configuration page of the portlet you can control some options and, if they are configured, you can also import your Liferay user custom fields.
 <h3>The CSV file</h3>
-The first line in the CSV file is mandatory and is like the following:<br/>
+The first line in the CSV file is mandatory and is exactly the following:<br/>
 <code>username;email;firstName;lastName;password;male;jobTitle;birthday;cf1;cf2;cf3;cf4;cf5;cf6;cf7;cf8;cf9;cf10;cf11;cf12;cf13;cf14;cf15;cf16;cf17;cf18;cf19;cf20</code><br/>
 <br/>
 The separator could be a semicolon ";" or a comma ",". You can change it from the Configuration page.<br/>
@@ -11,7 +19,7 @@ The default is a semicolon ";".
 The column <strong>username</strong> will be the Lifeary users's Screen Name and is mandatory.<br/>
 The column <strong>email</strong> will be the Lifeary users's Email and is mandatory.<br/>
 The column <strong>firstName</strong> will be the Lifeary users's First name and is mandatory.<br/>
-The column <strong>lastName</strong> will be the Lifeary users's Last name and it could be mandatory (it depends from the Portal Settings->Users->Last name ruquired option).<br/>
+The column <strong>lastName</strong> will be the Lifeary users's Last name and it could be mandatory (it depends from the Portal Settings->Users->Last name required option).<br/>
 The column <strong>password</strong> will be the Lifeary users's password and is mandatory.<br/>
 The column <strong>male</strong> will be the Lifeary users's Ses and sould be "true" (for "male") or "false" (for "female"). In the configuration page you can "Ignore" this column.<br/>
 The column <strong>jobTitle</strong> will be the Lifeary users's Job title. In the configuration page you can "Ignore" this column.<br/>
