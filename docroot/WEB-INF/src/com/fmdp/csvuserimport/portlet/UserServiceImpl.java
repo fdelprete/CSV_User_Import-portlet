@@ -212,28 +212,31 @@ public class UserServiceImpl {
 			 */
 			preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletInstanceId);
 			String customFields = preferences.getValue("customFields", "");
-			String cFs[] = customFields.split(",");
-			String beanFieldValue = "";
-			String cfName = "";
-			int k = 0;
-			for (int j = 0; j < cFs.length; j++){
-				k = j + 1;
-				cfName = "cf" + k;
-				try {
-					beanFieldValue = (String) PropertyUtils.getProperty(userBean, cfName);
-					user.getExpandoBridge().setAttribute(cFs[j], beanFieldValue);
-					if (_log.isDebugEnabled()){
-						_log.debug("User custom field: " + cFs[j] + " " + beanFieldValue);
+			if(customFields != null && !customFields.isEmpty()) {
+				String cFs[] = customFields.split(",");
+				String beanFieldValue = "";
+				String cfName = "";
+				int k = 0;
+				for (int j = 0; j < cFs.length; j++){
+					k = j + 1;
+					cfName = "cf" + k;
+					try {
+						beanFieldValue = (String) PropertyUtils.getProperty(userBean, cfName);
+						user.getExpandoBridge().setAttribute(cFs[j], beanFieldValue);
+						if (_log.isDebugEnabled()){
+							_log.debug("User custom field: " + cFs[j] + " " + beanFieldValue);
+						}
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
 					}
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
+					retVal = true;
 				}
-
-				retVal = true;
+			} else {
+				retVal = false;
 			}
 		} catch (PortalException e) {
 			e.printStackTrace();

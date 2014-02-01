@@ -75,7 +75,7 @@ public class UserCSVReader {
     try {
     	String portletInstanceId = (String) request.getAttribute(WebKeys.PORTLET_ID);
     	PortletPreferences preferences = PortletPreferencesFactoryUtil.getPortletSetup(request, portletInstanceId);
-    	String csvSeparator = preferences.getValue("csvSeparator", ";");
+    	String csvSeparator = preferences.getValue("csvSeparator", "EXCEL_NORTH_EUROPE_PREFERENCE");
     	String maleCsvStatus = preferences.getValue("maleCsvStatus","ignore");
     	String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
     	String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
