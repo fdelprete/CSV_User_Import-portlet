@@ -18,6 +18,9 @@ import org.supercsv.cellprocessor.ParseBool;
 import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.exception.SuperCsvCellProcessorException;
+import org.supercsv.exception.SuperCsvConstraintViolationException;
+import org.supercsv.exception.SuperCsvException;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
@@ -160,6 +163,7 @@ public class UserCSVReader {
         	try {
                 inFile.close();
               } catch (IOException e) {
+            	  _log.error(e);
               }
         	return null;
         }
@@ -168,8 +172,54 @@ public class UserCSVReader {
             _log.debug("Reading users with properties: " + Arrays.toString(header) + " from CSV file.");
         }
         CsvUserBean user;
-        while ((user = inFile.read(CsvUserBean.class, header, processors)) != null) {
-          users.add(user);
+        boolean goLoop;
+        goLoop = true;
+        long curRow = 0;
+        while (goLoop) {
+        	try {
+        		curRow += 1;
+	        	user = inFile.read(CsvUserBean.class, header, processors);
+	        	if (user != null) {
+	        		users.add(user);
+	        	} else {
+	        		goLoop = false;
+	        	}
+
+        	} catch (SuperCsvConstraintViolationException eCV) {
+            	_log.error("NON right VALUE ENCOUNTERD ON ROW "+ inFile.getRowNumber() + " --- "+  eCV.getMessage());
+
+        		SessionErrors.add(request,"non_right_value_ecountered_on_row");
+            	request.setAttribute("error_row", curRow);
+            	try {
+                    inFile.close();
+                  } catch (IOException e) {
+                	  _log.error(e);
+                  }
+            	return null;
+        	} catch (SuperCsvCellProcessorException ePE){
+        		 _log.error("PARSER EXCEPTION ON ROW "+inFile.getRowNumber() + " --- "+  ePE.getMessage());
+         		SessionErrors.add(request,"parser_exception_on_row");
+            	request.setAttribute("error_row", curRow);
+            	try {
+                    inFile.close();
+                  } catch (IOException e) {
+                	  _log.error(e);
+                  }
+            	return null;
+
+        	} catch (SuperCsvException ex){
+        		 _log.error("ERROR ON ROW "+inFile.getRowNumber() + " --- "+  ex.getMessage());
+         		SessionErrors.add(request,"error_on_row");
+            	request.setAttribute("error_row", curRow);
+            	try {
+                    inFile.close();
+                  } catch (IOException e) {
+                	  _log.error(e);
+                  }
+            	return null;
+
+        		 }
+
         }
         if(_log.isDebugEnabled()) {
             _log.debug(users.size() + " users were read from CSV file.");

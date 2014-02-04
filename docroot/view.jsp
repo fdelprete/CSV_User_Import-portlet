@@ -32,6 +32,10 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	count_good = renderRequest.getAttribute("count_good").toString();
 	total_users = utenti.size() + Integer.parseInt(renderRequest.getAttribute("count_good").toString());
 }
+String error_row = "";
+if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
+	error_row = renderRequest.getAttribute("error_row").toString();
+}
 %>
 
 <portlet:actionURL var="uploadCsvURL" name="uploadCsv">
@@ -48,6 +52,14 @@ if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	message="Expected header not found in the CSV file." />
 <liferay-ui:error key="error"
 	message="Sorry, an error prevented the upload. Please try again." />
+<liferay-ui:error key="error"
+	message="Sorry, an error prevented the upload. Please try again." />
+<liferay-ui:error key="non_right_value_ecountered_on_row"
+	message='<%= LanguageUtil.format(pageContext, "non_right_value_ecountered_on_row", error_row) %>' />
+<liferay-ui:error key="parser_exception_on_row"
+	message='<%= LanguageUtil.format(pageContext, "parser_exception_on_row", error_row) %>' />
+<liferay-ui:error key="error_on_row"
+	message='<%= LanguageUtil.format(pageContext, "error_on_row", error_row) %>' />
 
 <aui:form action="<%= uploadCsvURL %>" enctype="multipart/form-data"
 	method="post">
