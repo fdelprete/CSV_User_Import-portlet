@@ -99,6 +99,7 @@ In the configuration page:
 This portlet is based on the original work of Paul Butenko (tks Paul).<br>
 http://java-liferay.blogspot.it/2012/09/how-to-make-users-import-into-liferay.html
 <br/>
-It uses SuperCSV java package.<br/>
-This portlet is for the 6.2.0-GA1 CE version of Liferay.
+It uses <a href="http://supercsv.sourceforge.net/">SuperCSV</a> java package.<br/>
+This portlet is for the 6.2.0-GA1 CE and for EE version of Liferay.
+Here in the <a href="https://www.liferay.com/marketplace/-/mp/application/33064852">Liferay Marketplace</a> you can download the portlet for previous Liferay versions.
 
