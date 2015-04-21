@@ -12,6 +12,18 @@ if (Validator.isNotNull(portletResource)) {
 }
 
 String csvSeparator = preferences.getValue("csvSeparator","EXCEL_NORTH_EUROPE_PREFERENCE");
+
+String address1CsvStatus = preferences.getValue("address1CsvStatus","ignore");
+String address2CsvStatus = preferences.getValue("address2CsvStatus","ignore");
+String cityCsvStatus = preferences.getValue("cityCsvStatus","ignore");
+String zipCsvStatus = preferences.getValue("zipCsvStatus","ignore");
+String stateCsvStatus = preferences.getValue("stateCsvStatus","ignore");
+String countryCsvStatus = preferences.getValue("countryCsvStatus","ignore");
+String phoneCsvStatus = preferences.getValue("phoneCsvStatus","ignore");
+String faxCsvStatus = preferences.getValue("faxCsvStatus","ignore");
+String commentsCsvStatus = preferences.getValue("commentsCsvStatus","ignore");
+
+
 String maleCsvStatus = preferences.getValue("maleCsvStatus","ignore");
 String jobtitleCsvStatus = preferences.getValue("jobtitleCsvStatus","ignore");
 String birthdayCsvStatus = preferences.getValue("birthdayCsvStatus","ignore");
@@ -183,6 +195,148 @@ Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames()
 						</tr>
 					</tbody>
 				</table>
+				<div class="separator"></div>
+				<table class="table table-bordered table-hover table-striped">
+					<thead class="table-columns">
+						<tr>
+							<th class="table-first-header"><liferay-ui:message
+									key="csv-field" /></th>
+							<th><liferay-ui:message key="use-ignore" /></th>
+							<th class="table-last-header"><liferay-ui:message
+									key="other-settings" /></th>
+						</tr>
+					</thead>
+					<tbody class="table-data">
+						<tr>
+							<td class="table-cell  first">address1</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="address1CsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= address1CsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= address1CsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">address2</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="address2CsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= address2CsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= address2CsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">city</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="cityCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= cityCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= cityCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">zip</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="zipCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= zipCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= zipCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">state</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="stateCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= stateCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= stateCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">country</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="countryCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= countryCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= countryCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">phone</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="phoneCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= phoneCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= phoneCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">fax</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="faxCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= faxCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= faxCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+						<tr>
+							<td class="table-cell  first">comments</td>
+							<td class="table-cell">
+								<aui:select label=""
+									name="commentsCsvStatus" showEmptyOption="false">
+									<aui:option label='ignore'
+										selected='<%= commentsCsvStatus.equals("ignore") %>'
+										value="ignore" />
+									<aui:option label='optional'
+										selected='<%= commentsCsvStatus.equals("optional") %>'
+										value="optional" />
+								</aui:select></td>
+							<td class="table-cell  last"></td>
+						</tr>
+
+					</tbody>
+				</table>
+
 			</aui:fieldset>
 		</c:when>
 		<c:when test='<%= tabs2.equals("custom-csv") %>'>

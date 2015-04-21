@@ -39,12 +39,33 @@ public class ConfigurationActionImpl implements ConfigurationAction {
         String customFields = "";
 
 
+        String address1CsvStatus = null;
+        String address2CsvStatus = null;
+        String cityCsvStatus = null;
+        String zipCsvStatus = null;
+        String stateCsvStatus = null;
+        String countryCsvStatus = null;
+        String phoneCsvStatus = null;
+        String faxCsvStatus = null;
+        String commentsCsvStatus = null;
+
         if (tabs2.equals("basic-csv")) {
 	        csvSeparator = ParamUtil.getString(actionRequest, "csvSeparator", "EXCEL_NORTH_EUROPE_PREFERENCE");
 	        maleCsvStatus = ParamUtil.getString(actionRequest, "maleCsvStatus", "ignore");
 	        jobtitleCsvStatus = ParamUtil.getString(actionRequest, "jobtitleCsvStatus", "ignore");
 	        birthdayCsvStatus = ParamUtil.getString(actionRequest, "birthdayCsvStatus", "ignore");
 	        birthdayCsvOptions = ParamUtil.getString(actionRequest, "birthdayCsvOptions", "dd-MM-yyyy");
+	        
+	        address1CsvStatus = ParamUtil.getString(actionRequest, "address1CsvStatus","ignore");
+	        address2CsvStatus = ParamUtil.getString(actionRequest, "address2CsvStatus","ignore");
+	        cityCsvStatus = ParamUtil.getString(actionRequest, "cityCsvStatus","ignore");
+	        zipCsvStatus = ParamUtil.getString(actionRequest, "zipCsvStatus","ignore");
+	        stateCsvStatus = ParamUtil.getString(actionRequest, "stateCsvStatus","ignore");
+	        countryCsvStatus = ParamUtil.getString(actionRequest, "countryCsvStatus","ignore");
+	        phoneCsvStatus = ParamUtil.getString(actionRequest, "phoneCsvStatus","ignore");
+	        faxCsvStatus = ParamUtil.getString(actionRequest, "faxCsvStatus","ignore");
+	        commentsCsvStatus = ParamUtil.getString(actionRequest, "commentsCsvStatus","ignore");
+	        
 	        if(_log.isDebugEnabled()) {
 	        	_log.debug("csvSeparator " + csvSeparator);
 	        	_log.debug("maleCsvStatus " + maleCsvStatus);
@@ -67,6 +88,16 @@ public class ConfigurationActionImpl implements ConfigurationAction {
 	        preferences.setValue("jobtitleCsvStatus", jobtitleCsvStatus);
 	        preferences.setValue("birthdayCsvStatus", birthdayCsvStatus);
 	        preferences.setValue("birthdayCsvOptions", birthdayCsvOptions);
+	        preferences.setValue("address1CsvStatus", address1CsvStatus);
+	        preferences.setValue("address2CsvStatus", address2CsvStatus);
+	        preferences.setValue("cityCsvStatus", cityCsvStatus);
+	        preferences.setValue("zipCsvStatus", zipCsvStatus);
+	        preferences.setValue("stateCsvStatus", stateCsvStatus);
+	        preferences.setValue("countryCsvStatus", countryCsvStatus);
+	        preferences.setValue("phoneCsvStatus", phoneCsvStatus);
+	        preferences.setValue("faxCsvStatus", faxCsvStatus);
+	        preferences.setValue("commentsCsvStatus", commentsCsvStatus);
+
         } else {
         	preferences.setValue("customFields", customFields);
         }

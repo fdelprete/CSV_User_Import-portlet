@@ -3,6 +3,7 @@
 
 <jsp:useBean id="utenti" class="java.util.ArrayList"
 	type="java.util.List" scope="request" />
+
 <%
 String uploadProgressId = PwdGenerator.getPassword(PwdGenerator.KEY3, 4);
 PortletPreferences preferences = renderRequest.getPreferences();
@@ -28,6 +29,11 @@ long parentOrganizationId = OrganizationConstants.ANY_PARENT_ORGANIZATION_ID;
 List<Organization> organizations = OrganizationLocalServiceUtil.getOrganizations(company.getCompanyId(),parentOrganizationId);
 String count_good = "";
 Integer total_users = 0;
+String import_type = "U";
+
+if (Validator.isNotNull(renderRequest.getAttribute("import_type"))) {
+	import_type = renderRequest.getAttribute("import_type").toString();
+}
 if (Validator.isNotNull(renderRequest.getAttribute("count_good"))) {
 	count_good = renderRequest.getAttribute("count_good").toString();
 	total_users = utenti.size() + Integer.parseInt(renderRequest.getAttribute("count_good").toString());
@@ -73,6 +79,12 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 			helpMessage="load-csv-file">
 			<aui:validator name="acceptFiles">'csv,txt'</aui:validator>
 		</aui:input>
+		
+		<aui:field-wrapper name="import_type" helpMessage="help-import-type">
+        	<aui:input checked="<%= true %>" inlineLabel="right" name="import_type" type="radio" value="U" label="users" />
+        	<aui:input  inlineLabel="right" name="import_type" type="radio" value="O" label="organizations" />
+    	</aui:field-wrapper>
+    	
 		<aui:select label="reg-role" name="roleId" helpMessage="select-role"
 			showEmptyOption="true">
 			<%
@@ -139,9 +151,11 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 	<table class="table table-bordered table-hover table-striped">
 		<thead class="table-columns">
 			<tr>
-				<th class="table-first-header"><liferay-ui:message
-						key="firstname-lastname" /></th>
-				<th><liferay-ui:message key="email" /></th>
+				<th class="table-first-header">
+					<liferay-ui:message
+						key='<%=import_type == "U" ? "firstname-lastname" : "companyName"%>' />
+				</th>
+				<th><liferay-ui:message key='<%=import_type == "U" ? "email" : ""%>' /></th>
 				<th class="table-last-header"><liferay-ui:message
 						key="csv-imp-status" /></th>
 			</tr>
@@ -149,7 +163,8 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 		<tbody class="table-data">
 			<%
 	for (int i = 0; i < utenti.size(); i++) {
-        CsvUserBean utente=(CsvUserBean)utenti.get(i);
+		if (import_type == "U") {
+        	CsvUserBean utente=(CsvUserBean)utenti.get(i);
     %>
 			<tr>
 				<td class="table-cell first"><%= utente.getFirstName() + " " + utente.getLastName()%></td>
@@ -157,6 +172,16 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 				<td class="table-cell last"><%= utente.getImpStatus()%></td>
 			</tr>
 			<%
+		} else {
+		CsvOrgBean org=(CsvOrgBean)utenti.get(i);
+	%>
+			<tr>
+				<td class="table-cell first"><%= org.getName()%></td>
+				<td class="table-cell"></td>
+				<td class="table-cell last"><%= org.getImpStatus()%></td>
+			</tr>	
+	<%
+		}
 	}
 	%>
 		</tbody>

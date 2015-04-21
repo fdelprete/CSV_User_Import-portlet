@@ -47,6 +47,7 @@ page import="java.io.Serializable" %>
 <%@ page import="com.liferay.portal.model.Organization"%>
 <%@ page import="com.liferay.portal.service.RoleLocalServiceUtil"%>
 <%@ page import="com.fmdp.csvuserimport.portlet.model.CsvUserBean"%>
+<%@ page import="com.fmdp.csvuserimport.portlet.model.CsvOrgBean"%>
 <%@ page import="com.liferay.portal.service.OrganizationLocalServiceUtil"%>
 <%@ page import="com.liferay.portal.model.RoleConstants"%>
 <%@ page import="com.liferay.portal.model.OrganizationConstants"%>
