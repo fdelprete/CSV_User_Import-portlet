@@ -70,8 +70,8 @@ Enumeration<String> attributeNames = user.getExpandoBridge().getAttributeNames()
 			<aui:fieldset cssClass='<%= renderResponse.getNamespace() + "prefList" %>'>
 				<aui:field-wrapper inlineField="true">
 					<liferay-ui:toggle id="table-toggle-csv-pref_id"
-						hideMessage='<%= "&laquo; " + LanguageUtil.get(pageContext, "hide-csv-pref") %>'
-						showMessage='<%= LanguageUtil.get(pageContext, "show-csv-pref") + " &raquo; " %>'
+						hideMessage='<%= "&laquo; " + LanguageUtil.get(request, "hide-csv-pref") %>'
+						showMessage='<%= LanguageUtil.get(request, "show-csv-pref") + " &raquo; " %>'
 						defaultShowContent="false" />
 					<div id="table-toggle-csv-pref_id"
 						style='display: <liferay-ui:toggle-value defaultValue="false" id="table-toggle-csv-pref_id"/>; padding-top:10px;'>

@@ -150,7 +150,7 @@ public class OrgServiceImpl {
 				for (ListType addressType : addressTypes) {   
 					String addressTypeName = addressType.getName();   
 					if(addressTypeName.equalsIgnoreCase("Billing")) {   
-						personalAddressTypeId = addressType.getListTypeId();   
+						personalAddressTypeId = (int) addressType.getListTypeId();   
 					}   
 				}
 
@@ -177,7 +177,7 @@ public class OrgServiceImpl {
 				for (ListType phoneType : phoneTypes) {  
 					String phoneTypeName = phoneType.getName();  
 					if (phoneTypeName.equalsIgnoreCase("Local")) {  
-						localPhoneTypeId = phoneType.getListTypeId();  
+						localPhoneTypeId = (int) phoneType.getListTypeId();  
 					}  
 				}  
 				PhoneLocalServiceUtil.addPhone(
@@ -193,7 +193,7 @@ public class OrgServiceImpl {
 				for (ListType phoneType : phoneTypes) {  
 					String phoneTypeName = phoneType.getName();  
 					if (phoneTypeName.equalsIgnoreCase("Fax")) {  
-						faxTypeId = phoneType.getListTypeId();  
+						faxTypeId = (int) phoneType.getListTypeId();  
 					}  
 				}  
 				PhoneLocalServiceUtil.addPhone(
