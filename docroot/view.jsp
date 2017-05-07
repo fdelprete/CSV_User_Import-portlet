@@ -53,7 +53,7 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 <liferay-ui:upload-progress id="<%= uploadProgressId %>"
 	message="uploading" redirect="<%= uploadCsvURL %>" />
 <liferay-ui:success key="success"
-	message='<%= LanguageUtil.format(pageContext, "success-read-and-added", new Object [] {count_good, total_users}) %>' />
+	message='<%= LanguageUtil.format(request, "success-read-and-added", new Object [] {count_good, total_users}) %>' />
 <liferay-ui:error key="expected-header-not-found-in-the-csv-file"
 	message="Expected header not found in the CSV file." />
 <liferay-ui:error key="error"
@@ -61,18 +61,18 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 <liferay-ui:error key="error"
 	message="Sorry, an error prevented the upload. Please try again." />
 <liferay-ui:error key="non_right_value_ecountered_on_row"
-	message='<%= LanguageUtil.format(pageContext, "non_right_value_ecountered_on_row", error_row) %>' />
+	message='<%= LanguageUtil.format(request, "non_right_value_ecountered_on_row", error_row) %>' />
 <liferay-ui:error key="parser_exception_on_row"
-	message='<%= LanguageUtil.format(pageContext, "parser_exception_on_row", error_row) %>' />
+	message='<%= LanguageUtil.format(request, "parser_exception_on_row", error_row) %>' />
 <liferay-ui:error key="error_on_row"
-	message='<%= LanguageUtil.format(pageContext, "error_on_row", error_row) %>' />
+	message='<%= LanguageUtil.format(request, "error_on_row", error_row) %>' />
 
 <aui:form action="<%= uploadCsvURL %>" enctype="multipart/form-data"
 	method="post">
 	<div class="alert alert-info">
 		<liferay-ui:message key="file-must-be-csv" />
 		<liferay-ui:message
-			key='<%= LanguageUtil.format(pageContext, "first-row-format", csvSep) %>' />
+			key='<%= LanguageUtil.format(request, "first-row-format", csvSep) %>' />
 	</div>
 	<aui:fieldset cssClass='fieldset'>
 		<aui:input type="file" name="fileName" size="75"
@@ -140,8 +140,8 @@ if (Validator.isNotNull(renderRequest.getAttribute("error_row"))) {
 	if (utenti.size()>0){ 
 	%>
 <liferay-ui:toggle id="table-toggle_id"
-	hideMessage='<%= "&laquo; " + LanguageUtil.get(pageContext, "hide-table") %>'
-	showMessage='<%= LanguageUtil.get(pageContext, "show-table") + "&raquo; " %>'
+	hideMessage='<%= "&laquo; " + LanguageUtil.get(request, "hide-table") %>'
+	showMessage='<%= LanguageUtil.get(request, "show-table") + "&raquo; " %>'
 	showImage='<%= themeDisplay.getPathThemeImages() + "/arrows/01_down.png"%>'
 	hideImage='<%= themeDisplay.getPathThemeImages() + "/arrows/01_right.png"%>'
 	defaultShowContent="<%=true %>" />

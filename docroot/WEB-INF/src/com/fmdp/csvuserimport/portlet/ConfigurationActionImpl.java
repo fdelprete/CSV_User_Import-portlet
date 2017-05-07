@@ -16,6 +16,8 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class ConfigurationActionImpl implements ConfigurationAction {
@@ -121,4 +123,11 @@ public class ConfigurationActionImpl implements ConfigurationAction {
  
         return "/configuration.jsp";
     }
+
+	@Override
+	public void include(PortletConfig arg0, HttpServletRequest arg1,
+			HttpServletResponse arg2) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
