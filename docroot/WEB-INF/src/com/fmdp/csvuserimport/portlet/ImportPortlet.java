@@ -12,8 +12,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+
 import com.fmdp.csvuserimport.portlet.model.CsvUserBean;
 import com.fmdp.csvuserimport.portlet.model.CsvOrgBean;
 

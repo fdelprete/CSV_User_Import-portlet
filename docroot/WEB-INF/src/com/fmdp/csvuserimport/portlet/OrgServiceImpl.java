@@ -12,9 +12,9 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 
-import com.liferay.portal.NoSuchCountryException;
-import com.liferay.portal.NoSuchOrganizationException;
-import com.liferay.portal.NoSuchRegionException;
+import com.liferay.portal.kernel.exception.NoSuchCountryException;
+import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
+import com.liferay.portal.kernel.exception.NoSuchRegionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,22 +22,22 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Country;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.model.ListTypeConstants;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.Region;
-import com.liferay.portal.service.AddressLocalServiceUtil;
-import com.liferay.portal.service.ListTypeServiceUtil;
-import com.liferay.portal.service.PhoneLocalServiceUtil;
-import com.liferay.portal.service.RegionServiceUtil;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextFactory;
-import com.liferay.portal.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.model.ListTypeConstants;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
+import com.liferay.portal.kernel.service.RegionServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.fmdp.csvuserimport.portlet.model.CsvOrgBean;
-import com.liferay.portal.model.OrganizationConstants;
-import com.liferay.portal.service.CountryServiceUtil;
+import com.liferay.portal.kernel.model.OrganizationConstants;
+import com.liferay.portal.kernel.service.CountryServiceUtil;
 
 
 public class OrgServiceImpl {
@@ -77,7 +77,7 @@ public class OrgServiceImpl {
 			long creatorUserId = themeDisplay.getUserId(); 
 			long companyId = themeDisplay.getCompanyId(); 
 
-			long parentOrganizationId = com.liferay.portal.model.OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID;
+			long parentOrganizationId = com.liferay.portal.kernel.model.OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID;
 
 			String orgType = OrganizationConstants.TYPE_REGULAR_ORGANIZATION;
 
